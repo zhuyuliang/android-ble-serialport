@@ -4,18 +4,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="准备就绪" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorAccent"/>
+
     <Button
         android:id="@+id/scan_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="扫描蓝牙" />
 
-    <TextView
-        android:id="@+id/tv_status"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="准备搜索"
-        android:visibility="gone" />
+        android:layout_height="1dp"
+        android:background="@color/colorAccent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,6 +49,11 @@
             android:text="蓝牙地址" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorAccent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
