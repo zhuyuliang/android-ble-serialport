@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/scan_btn"
@@ -14,7 +14,31 @@
         android:id="@+id/tv_status"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="准备搜索"/>
+        android:text="准备搜索"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:text="蓝牙名称" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:gravity="right|center_vertical"
+            android:text="蓝牙地址" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
