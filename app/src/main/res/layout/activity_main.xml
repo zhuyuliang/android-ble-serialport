@@ -1,72 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_status"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="44dp"
+        android:id="@+id/scan_type_tv"
         android:gravity="center"
-        android:text="准备就绪" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorAccent"/>
+        android:textColor="@color/colorAccent"
+        android:layout_margin="6dp"
+        android:background="@drawable/bg_scan_frame"
+        android:text="准备扫描"
+        android:layout_alignParentTop="true" />
 
     <Button
         android:id="@+id/scan_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="扫描蓝牙" />
+        android:layout_height="50dp"
+        android:layout_margin="6dp"
+        android:background="@drawable/bg_scan_btn"
+        android:textColor="@android:color/white"
+        android:layout_alignParentBottom="true"
+        android:text="开始扫描" />
 
     <View
+        android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorAccent"/>
+        android:layout_above="@id/scan_btn"
+        android:background="@color/line"/>
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/list_fl"
+        android:layout_above="@id/line"
+        android:layout_below="@id/scan_type_tv"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_marginTop="3dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_weight="1"
-            android:gravity="left|center_vertical"
-            android:text="蓝牙名称" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="16dp"
-            android:layout_weight="1"
-            android:gravity="right|center_vertical"
-            android:text="蓝牙地址" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorAccent"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_margin="6dp"/>
 
         <ListView
             android:id="@+id/ble_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:dividerHeight="0dp"
+            android:divider="#00000000">
 
         </ListView>
 
-    </LinearLayout>
+    </FrameLayout>
 
-</LinearLayout>
+
+</RelativeLayout>

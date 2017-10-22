@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,10 +21,10 @@ import java.util.List;
 public class DeviceListAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<BLEDevice> devicelist;
+    private List<BDevice> devicelist;
     private MainPresenter mainPresenter;
 
-    public DeviceListAdapter(Context context,MainPresenter presenter, List<BLEDevice> devicelist) {
+    public DeviceListAdapter(Context context,MainPresenter presenter, List<BDevice> devicelist) {
         this.mContext = context;
         this.devicelist = devicelist;
         this.mainPresenter = presenter;
@@ -67,7 +66,7 @@ public class DeviceListAdapter extends BaseAdapter {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
-                mainPresenter.OnClickConnectBLE(devicelist.get(i));
+                mainPresenter.OnClickConnect(devicelist.get(i));
             }
         });
 

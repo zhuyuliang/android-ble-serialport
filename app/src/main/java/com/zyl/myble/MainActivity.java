@@ -1,42 +1,18 @@
 package com.zyl.myble;
 
-import android.Manifest;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.le.AdvertiseCallback;
-import android.bluetooth.le.AdvertiseData;
-import android.bluetooth.le.AdvertiseSettings;
-import android.bluetooth.le.BluetoothLeAdvertiser;
-import android.bluetooth.le.BluetoothLeScanner;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanRecord;
-import android.bluetooth.le.ScanResult;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ParcelUuid;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author zhuyuliang
@@ -51,10 +27,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //扫描按键
     private Button scan_btn;
+    private TextView scan_type_tv;
     //扫描结果列表
     private ListView ble_list;
-    //扫描状态
-    private TextView tv_status;
+    private ProgressBar progressbar;
+
     //adappter
     private DeviceListAdapter mLeDeviceListAdapter;
 
@@ -65,10 +42,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         scan_btn = (Button) findViewById(R.id.scan_btn);
+        scan_type_tv = (TextView) findViewById(R.id.scan_type_tv);
         scan_btn.setOnClickListener(this);
-        tv_status = (TextView) findViewById(R.id.tv_status);
         //list
         ble_list = (ListView) findViewById(R.id.ble_list);
+        progressbar = (ProgressBar) findViewById(R.id.progressbar);
 
         //初始化控制器
         mainPresenter = new MainPresenter(this);
@@ -76,20 +54,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLeDeviceListAdapter = new DeviceListAdapter(this, mainPresenter, mainPresenter.devicelist);
         ble_list.setAdapter(mLeDeviceListAdapter);
 
+        //申请敏感权限
         mainPresenter.RequestPermissions();
+        //判断蓝牙设备是否支持
+        mainPresenter.isSupportBluetooch();
+        //判断是否打开蓝牙
+        mainPresenter.isOpenBluetooch();
+        //判断是否支持BLE
         mainPresenter.isSuppertBLE();
 
     }
 
     /**
      * 设置蓝牙设备状态
+     *
      * @param str
      */
-    public void setTv_status(String str){
-        tv_status.setText(str);
+    public void setStatus(String str, boolean isprogressbar) {
+        scan_type_tv.setText(str);
+        if (isprogressbar) {
+            progressbar.setVisibility(View.VISIBLE);
+            scan_btn.setText("停止扫描");
+        }else {
+            progressbar.setVisibility(View.GONE);
+            scan_btn.setText("开始扫描");
+        }
     }
 
-    public void refreshList(List<BLEDevice> bleDevices){
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainPresenter.removeBluetoochReceiver();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mainPresenter.RegisterBluetoochReceiver();
+    }
+
+    public void refreshList() {
         mLeDeviceListAdapter.notifyDataSetChanged();
     }
 
@@ -98,7 +102,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scan_btn:
-                mainPresenter.scanBLE();
+                //判断搜索ble还是普通蓝牙
+                if(mainPresenter.isScanining()){
+                    mainPresenter.BreakScanBluetooch();
+                }else{
+                    showDialogForSelectScanType();
+                }
                 break;
         }
     }
@@ -122,6 +131,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
         }
+    }
+
+    /**
+     * 弹框选择搜索类型
+     */
+    private void showDialogForSelectScanType(){
+        final String items[] = {"CommonBluetooch", "BLE"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("扫描类型");
+        builder.setIcon(R.mipmap.ic_launcher);
+        // 设置列表显示，注意设置了列表显示就不要设置builder.setMessage()了，否则列表不起作用。
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                if(items[which].equals("BLE")){
+                    mainPresenter.scanBLE();
+                }else if(items[which].equals("CommonBluetooch")){
+                    mainPresenter.scanCommonBluetooch();
+                }
+            }
+        });
+        builder.setPositiveButton("关闭", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
 
