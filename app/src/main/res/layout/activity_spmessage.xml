@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:id="@+id/send_info"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:weightSum="3"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Txd"
+            android:textColor="@color/txd_color"
+            android:background="@color/txd_bg_color"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Rxd"
+            android:textColor="@color/rxd_color"
+            android:background="@color/rxd_bg_color"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Running"
+            android:textColor="@color/running_color"
+            android:background="@color/running_bg_color"
+            />
+
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/send_ll"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:weightSum="10">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:layout_alignParentBottom="true"/>
+        
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="发送"
+            android:layout_weight="2"/>
+        
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/info_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/send_ll"
+        android:layout_below="@id/send_info"
+        android:dividerHeight="0dp"
+        android:divider="#00000000">
+
+    </ListView>
+
+
+</RelativeLayout>

@@ -60,7 +60,7 @@ public class MainPresenter {
 
     Handler mHandler;
     List<BDevice> devicelist = new ArrayList<>();
-    StringBuffer builder = new StringBuffer();
+    StringBuffer builder = new StringBuffer("");
     private boolean isScanBLE = false;
     private boolean isScanBluetooch = false;
 
@@ -254,7 +254,9 @@ public class MainPresenter {
                     || TextUtils.isEmpty(result.getDevice().getName())) {
                 return;
             }
-
+            if(builder == null && builder.toString() != null) {
+                builder = new StringBuffer("");
+            }
             BluetoothDevice device = result.getDevice();
             Log.d(TAG, "Device name: " + device.getName());
             Log.d(TAG, "Device address: " + device.getAddress());
@@ -280,9 +282,7 @@ public class MainPresenter {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void stopBLEScanning() {
         isScanBLE = false;
-        if (builder != null) {
-            builder.delete(0, builder.length());
-        }
+        builder = new StringBuffer("");
         if (mBluetoothLeScanner != null) {
             Log.d(TAG, "Stop scanning.");
             mBluetoothLeScanner.stopScan(mScanCallback);
@@ -296,9 +296,7 @@ public class MainPresenter {
      */
     private void BreakOffBLEScanning(){
         isScanBLE = false;
-        if (builder != null) {
-            builder.delete(0, builder.length());
-        }
+        builder = new StringBuffer("");
         mHandler.removeCallbacks(scantimerunnable);
         if (mBluetoothLeScanner != null) {
             mBluetoothLeScanner.stopScan(mScanCallback);
@@ -314,6 +312,7 @@ public class MainPresenter {
     public void OnClickConnectBLE(BDevice bdDevice) {
         BreakOffBLEScanning();
         Toast.makeText(mainActivity, "BLE:" + bdDevice.getDevice_name(), Toast.LENGTH_LONG).show();
+        mainActivity.startActivity(bdDevice);
     }
 
     /** TODO end BLE ***/
@@ -349,6 +348,12 @@ public class MainPresenter {
                 if (device == null) {
                     return;
                 }
+                if(device.getName() == null){
+                    return;
+                }
+                if(builder == null && builder.toString() != null) {
+                    builder = new StringBuffer("");
+                }
                 if (builder.toString().contains(device.getName())) {
                 } else {
                     devicelist.add(new BDevice(device.getName(), device.getAddress(),device, BDevice.BluetoochType.CommonBluetooch));
@@ -366,9 +371,7 @@ public class MainPresenter {
      */
     public void stopScanCommonBluetooch(){
         isScanBluetooch = false;
-        if (builder != null) {
-            builder.delete(0, builder.length());
-        }
+        builder = new StringBuffer("");
         if(bluetoothAdapter != null) {
             bluetoothAdapter.cancelDiscovery();
         }
@@ -382,9 +385,7 @@ public class MainPresenter {
      */
     public void BreakScanCommonBluetooch(){
         isScanBluetooch = false;
-        if (builder != null) {
-            builder.delete(0, builder.length());
-        }
+        builder = new StringBuffer("");
         if(bluetoothAdapter != null) {
             bluetoothAdapter.cancelDiscovery();
         }
@@ -417,6 +418,7 @@ public class MainPresenter {
     public void OnClickConnectBluetooch(BDevice bdDevice) {
         BreakScanCommonBluetooch();
         Toast.makeText(mainActivity, "普通蓝牙:" + bdDevice.getDevice_name(), Toast.LENGTH_LONG).show();
+        mainActivity.startActivity(bdDevice);
     }
 
     /** TODO end 普通蓝牙搜索 ***/

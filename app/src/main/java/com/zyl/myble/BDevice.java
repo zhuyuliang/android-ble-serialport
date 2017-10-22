@@ -5,18 +5,52 @@ package com.zyl.myble;
  */
 
 import android.bluetooth.BluetoothDevice;
+import android.os.Parcel;
 import android.os.ParcelUuid;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 
 /**
  * 蓝牙设备实体类 BLE和普通蓝牙
  */
-public class BDevice {
+public class BDevice implements Parcelable {
 
     public BDevice(String device_name, String device_id, BluetoothDevice device, BluetoochType bluetoochType) {
         this.device_name = device_name;
         this.device_id = device_id;
         this.device = device;
         this.bluetoochType = bluetoochType;
+    }
+
+    protected BDevice(Parcel in) {
+        device_name = in.readString();
+        device_id = in.readString();
+        device = in.readParcelable(BluetoothDevice.class.getClassLoader());
+    }
+
+    public static final Creator<BDevice> CREATOR = new Creator<BDevice>() {
+        @Override
+        public BDevice createFromParcel(Parcel in) {
+            return new BDevice(in);
+        }
+
+        @Override
+        public BDevice[] newArray(int size) {
+            return new BDevice[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(device_name);
+        parcel.writeString(device_id);
+        parcel.writeParcelable(device, i);
     }
 
     enum BluetoochType {

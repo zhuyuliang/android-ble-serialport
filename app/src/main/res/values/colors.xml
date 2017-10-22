@@ -6,4 +6,11 @@
 
     <color name="line">#88000000</color>
 
+    <color name="txd_color">#88000000</color>
+    <color name="txd_bg_color">#11F1F5</color>
+    <color name="rxd_color">#88000000</color>
+    <color name="rxd_bg_color">#FF4081</color>
+    <color name="running_color">#88000000</color>
+    <color name="running_bg_color">#3FFF81</color>
+
 </resources>

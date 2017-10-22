@@ -162,5 +162,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.create().show();
     }
 
+    /**
+     * 跳转串口操作界面
+     * @param bDevice
+     */
+    public void startActivity(BDevice bDevice){
+        Intent intent = new Intent(this,SerialPortMessageActivity.class);
+        intent.putExtra(Constant.BDEVICE_KEY,bDevice);
+        startActivity(intent);
+    }
+
 
 }
